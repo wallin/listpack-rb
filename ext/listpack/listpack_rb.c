@@ -193,7 +193,7 @@ static VALUE allocate(VALUE klass)
   return Data_Wrap_Struct(klass, NULL, deallocate, list);
 }
 
-void Init_listpack(void) {
+void Init_listpack_c(void) {
   Listpack = rb_define_class("Listpack", rb_cObject);
   rb_define_alloc_func(Listpack, allocate);
 

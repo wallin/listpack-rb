@@ -11,6 +11,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Sebastian Wallin"]
   spec.email         = ["sebastian.wallin@gmail.com"]
   spec.extensions    = ["ext/listpack/extconf.rb"]
+  spec.platform      = Gem::Platform::RUBY
 
   spec.summary       = %q{Ruby wrapper for Redis listpack data structure}
   spec.description   = %q{Ruby wrapper for Redis listpack data structure}

@@ -2,4 +2,4 @@
 
 require 'mkmf'
 
-create_makefile('listpack')
+create_makefile('listpack_c')
