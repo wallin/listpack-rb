@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    listpack (0.0.1.beta)
+    listpack (0.0.1.beta2)
       rake-compiler
 
 GEM
