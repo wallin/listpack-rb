@@ -193,9 +193,48 @@ static VALUE allocate(VALUE klass)
   return Data_Wrap_Struct(klass, NULL, deallocate, list);
 }
 
+VALUE rb_class_listpack_dump(VALUE self, VALUE rb_ary)
+{
+  Check_Type(rb_ary, T_ARRAY);
+  unsigned long len = (unsigned int) RARRAY_LEN(rb_ary);
+  unsigned char *lp = lpNew();
+  unsigned int i = 0;
+  VALUE current;
+
+  for (i = 0; i < len; i++) {
+      current = rb_ary_entry(rb_ary, i);
+      // TODO: convert integer to string if necessary
+      Check_Type(current, T_STRING);
+      lp = lpAppend(lp, (unsigned char *) RSTRING_PTR(current), RSTRING_LENINT(current));
+      if (lp == NULL) {
+        rb_raise(rb_eNoMemError, "no memory for listpack");
+      }
+  }
+
+  return rb_str_new((char *) lp, lpBytes(lp));
+}
+
+VALUE rb_class_listpack_load(VALUE self, VALUE rb_str)
+{
+  Check_Type(rb_str, T_STRING);
+  char *lp = RSTRING_PTR(rb_str);
+  unsigned char *p = lpFirst((unsigned char *) lp);
+  VALUE r_array = rb_ary_new();
+
+  while(p) {
+    rb_ary_push(r_array, _rb_listpack_getvalue(p));
+    p = lpNext((unsigned char *) lp, p);
+  }
+
+  return r_array;
+}
+
 void Init_listpack_c(void) {
   Listpack = rb_define_class("Listpack", rb_cObject);
   rb_define_alloc_func(Listpack, allocate);
+
+  rb_define_singleton_method(Listpack, "dump", rb_class_listpack_dump, 1);
+  rb_define_singleton_method(Listpack, "load", rb_class_listpack_load, 1);
 
   rb_define_method(Listpack, "append", rb_listpack_append, 1);
   rb_define_method(Listpack, "current", rb_listpack_current, 0);
