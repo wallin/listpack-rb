@@ -10,7 +10,6 @@ Gem::Specification.new do |spec|
   spec.version       = Listpack::VERSION
   spec.authors       = ["Sebastian Wallin"]
   spec.email         = ["sebastian.wallin@gmail.com"]
-  spec.extensions    = ["ext/listpack/extconf.rb"]
   spec.platform      = Gem::Platform::RUBY
 
   spec.summary       = %q{Ruby wrapper for Redis listpack data structure}
@@ -21,9 +20,13 @@ Gem::Specification.new do |spec|
   spec.files         = `git ls-files -z`.split("\x0").reject do |f|
     f.match(%r{^(test|spec|features)/})
   end
-  spec.bindir        = "exe"
+  spec.bindir        = 'exe'
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
-  spec.require_paths = ["lib"]
+  spec.require_paths = ['lib']
+  spec.extensions    = ['ext/listpack/extconf.rb']
 
-  spec.add_dependency "rake-compiler"
+  spec.add_development_dependency 'bundler'
+  spec.add_development_dependency 'rake'
+  spec.add_development_dependency 'rake-compiler'
+  spec.add_development_dependency 'rspec'
 end
