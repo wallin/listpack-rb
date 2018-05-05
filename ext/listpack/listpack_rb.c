@@ -219,10 +219,12 @@ VALUE rb_class_listpack_load(VALUE self, VALUE rb_str)
   Check_Type(rb_str, T_STRING);
   char *lp = RSTRING_PTR(rb_str);
   unsigned char *p = lpFirst((unsigned char *) lp);
-  VALUE r_array = rb_ary_new();
+  unsigned int len = lpLength((unsigned char *) lp);
+  unsigned int i = 0;
+  VALUE r_array = rb_ary_new2(len);
 
   while(p) {
-    rb_ary_push(r_array, _rb_listpack_getvalue(p));
+    rb_ary_store(r_array, i++, _rb_listpack_getvalue(p));
     p = lpNext((unsigned char *) lp, p);
   }
 
