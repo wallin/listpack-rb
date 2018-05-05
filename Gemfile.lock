@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    listpack (0.0.1.beta2)
+    listpack (0.0.1.beta3)
 
 GEM
   remote: https://rubygems.org/
