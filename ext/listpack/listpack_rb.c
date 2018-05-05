@@ -200,18 +200,26 @@ VALUE rb_class_listpack_dump(VALUE self, VALUE rb_ary)
   unsigned char *lp = lpNew();
   unsigned int i = 0;
   VALUE current;
+  VALUE retval;
 
   for (i = 0; i < len; i++) {
-      current = rb_ary_entry(rb_ary, i);
-      // TODO: convert integer to string if necessary
-      Check_Type(current, T_STRING);
-      lp = lpAppend(lp, (unsigned char *) RSTRING_PTR(current), RSTRING_LENINT(current));
-      if (lp == NULL) {
-        rb_raise(rb_eNoMemError, "no memory for listpack");
-      }
+    current = rb_ary_entry(rb_ary, i);
+    // TODO: convert integer to string if necessary
+    if (rb_type(current) != T_STRING) {
+      lpFree(lp);
+      rb_raise(rb_eArgError, "wrong type");
+    }
+
+    lp = lpAppend(lp, (unsigned char *) RSTRING_PTR(current), RSTRING_LENINT(current));
+
+    if (lp == NULL) {
+      rb_raise(rb_eNoMemError, "no memory for listpack");
+    }
   }
 
-  return rb_str_new((char *) lp, lpBytes(lp));
+  retval = rb_str_new((char *) lp, lpBytes(lp));
+  lpFree(lp);
+  return retval;
 }
 
 VALUE rb_class_listpack_load(VALUE self, VALUE rb_str)
