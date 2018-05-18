@@ -204,8 +204,10 @@ VALUE rb_class_listpack_dump(VALUE self, VALUE rb_ary)
 
   for (i = 0; i < len; i++) {
     current = rb_ary_entry(rb_ary, i);
-    // TODO: convert integer to string if necessary
-    if (rb_type(current) != T_STRING) {
+
+    if (rb_type(current) == T_FIXNUM) {
+      current = rb_funcall(current, rb_intern("to_s"), 0);
+    } else if (rb_type(current) != T_STRING) {
       lpFree(lp);
       rb_raise(rb_eArgError, "wrong type");
     }

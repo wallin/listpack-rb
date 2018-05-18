@@ -2,7 +2,6 @@
 
 Ruby wrapper for [Redis listpack](https://gist.github.com/antirez/66ffab20190ece8a7485bd9accfbc175) data structure
 
-
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -22,29 +21,24 @@ Or install it yourself as:
 ## Usage
 
 ```ruby
-lp = Listpack.new
+# Strings containing number are automatically converted to integers
+ary = ['1234', 'string']
+lp = Listpack.dump(ary)
+  # => "\x12\x00\x00\x00\x02\x00\xC4\xD2\x02\x86string\a\xFF"
 
-lp.append('1234')
-lp.append('string')
-
-lp.to_s
+# This will be the same as the above
+ary = [1234, 'string']
+lp = Listpack.dump(ary)
   # => "\x12\x00\x00\x00\x02\x00\xC4\xD2\x02\x86string\a\xFF"
 ```
 
 #### Load a serialized listpack
 
 ```ruby
-data = "\x12\x00\x00\x00\x02\x00\xC4\xD2\x02\x86string\a\xFF"
+lp = "\x12\x00\x00\x00\x02\x00\xC4\xD2\x02\x86string\a\xFF"
 
-lp = Listpack.new(data)
-
-lp.size
-  # => 2
-
-lp.next
-  # => 1234
-lp.next
-  # => "string"
+ary = Listpack.load(lp)
+  # => [1234, "string"]
 ```
 
 ## Development
