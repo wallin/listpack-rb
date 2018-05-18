@@ -1,4 +1,5 @@
 # Listpack Ruby
+[![Build Status](https://travis-ci.org/wallin/listpack-rb.svg?branch=master)](https://travis-ci.org/wallin/listpack-rb)
 
 Ruby wrapper for [Redis listpack](https://gist.github.com/antirez/66ffab20190ece8a7485bd9accfbc175) data structure
 
